@@ -1,0 +1,68 @@
+{
+  "name": "Node.js 24 + TypeScript",
+
+  // Build the image from the local Dockerfile; all tooling lives there.
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "../.."
+  },
+
+  // Load secrets / API keys from a local .env file that is never committed.
+  // Run: cp .env.example .env  and fill in your values before opening the container.
+  "initializeCommand": "test -f ${localWorkspaceFolder}/.env || cp ${localWorkspaceFolder}/.env.example ${localWorkspaceFolder}/.env",
+  "runArgs": ["--env-file=${localWorkspaceFolder}/.env"],
+
+  // Use the node user (uid 1000) that ships with the official node image.
+  "remoteUser": "node",
+
+  // VS Code customisations ────────────────────────────────────────────────────
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // Use zsh as the integrated terminal shell.
+        "terminal.integrated.defaultProfile.linux": "zsh",
+
+        // ── MCP servers (shared across all containers) ──────────────────────
+        // These are also declared in .vscode/mcp.json at the repo root.
+        "mcp": {
+          "servers": {
+            "context7": {
+              "type": "stdio",
+              "command": "npx",
+              "args": ["-y", "@upstash/context7-mcp@latest"]
+            },
+            "github": {
+              "type": "stdio",
+              "command": "npx",
+              "args": ["-y", "@modelcontextprotocol/server-github"],
+              "env": {
+                "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+              }
+            },
+            "chrome-devtools": {
+              "type": "stdio",
+              "command": "npx",
+              "args": ["-y", "@chrome-devtools/chrome-devtools-mcp"]
+            }
+          }
+        }
+      },
+
+      // ── Extensions ─────────────────────────────────────────────────────────
+      // Shared extensions (from .devcontainer/shared/extensions.json):
+      "extensions": [
+        "vscodevim.vim",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+
+        // Node.js 24 specific:
+        "biomejs.biome",
+        "ms-playwright.playwright"
+      ]
+    }
+  },
+
+  // Install the GitHub Copilot CLI (gh extension) and any project deps after
+  // the container is created.
+  "postCreateCommand": "gh extension install github/gh-copilot 2>/dev/null || true"
+}

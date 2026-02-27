@@ -1,0 +1,10 @@
+{
+  "reference": {
+    "description": "VS Code extensions shared across ALL dev containers in this repository. Copy these IDs into the 'customizations.vscode.extensions' array of every devcontainer.json you create.",
+    "extensions": [
+      "vscodevim.vim",
+      "GitHub.copilot",
+      "GitHub.copilot-chat"
+    ]
+  }
+}

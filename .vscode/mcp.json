@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/mcp.json",
+
+  // ── Shared MCP servers ──────────────────────────────────────────────────────
+  // These servers are available in every dev container opened from this
+  // repository.  The same configuration is also embedded in each
+  // devcontainer.json for containers that need it.
+  //
+  // Required environment variables (set in .env, never commit it):
+  //   GITHUB_PERSONAL_ACCESS_TOKEN  – GitHub PAT for the GitHub MCP server
+  "servers": {
+    // Context7 – up-to-date library docs injected into Copilot context
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+
+    // GitHub MCP – repository, PR, issue and code-search tools for Copilot
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+
+    // Chrome DevTools MCP – browser automation & debugging via CDP
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@chrome-devtools/chrome-devtools-mcp"]
+    }
+  }
+}
