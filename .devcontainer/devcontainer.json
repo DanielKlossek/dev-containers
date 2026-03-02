@@ -13,24 +13,37 @@
 			"installZsh": true, 
 			"configureZshAsDefaultShell": true
 		},
-		"./features/vim": {}
+		"./features/vim": {},
+		"ghcr.io/devcontainers/features/node:1": {}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a",
+	// Use 'postCreateCommand' so run commands after the container is created.
+	"postCreateCommand": ".devcontainer/scripts/post-create.sh",
 
 	// Configure tool-specific properties.
-	// "customizations": {
-	// 	"vscode": {
-    //  	"extensions": ["streetsidesoftware.code-spell-checker"]
-    // 	}
-	// },
-
-	"runArgs": ["--env-file", ".env"]
-
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscodevim.vim"
+			],
+			"settings": {
+				"terminal.integrated.fontLigatures": true,
+				"terminal.integrated.defaultProfile.linux": "zsh",
+				"terminal.integrated.profiles.linux": {
+					"zsh": {
+						"path": "/bin/zsh",
+						"icon": "terminal-ubuntu"
+					}
+				},
+				"editor.lineNumbers": "relative",
+				"editor.minimap.enabled" : false
+			}
+		}
+	}
+	//"runArgs": ["--env-file", ".env"]
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }
